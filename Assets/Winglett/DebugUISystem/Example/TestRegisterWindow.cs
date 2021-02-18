@@ -23,6 +23,7 @@ namespace Winglett.DebugSystem
                 DebugUISystem.RegisterWindow(windows[i], new Vector2(200, 300), () =>
                 {
                     GUI.Label(new Rect(5, 20, 160, 20), "Hello World");
+                    GUI.Box(new Rect(20, 140, 160, 20), "Some box");
                 });
             }
         }
