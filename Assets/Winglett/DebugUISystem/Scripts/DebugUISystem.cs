@@ -136,7 +136,8 @@ namespace Winglett.DebugSystem
                             ActionOnRecursiveMenuItems(menu.menuItems, x =>
                             {
                                 // Don't disable the current menu - toggle it below
-                                if (x != menu.menuItems[index]) x.enabled = false;
+                                // Don't disable windows or actions
+                                if (x != menu.menuItems[index] && x.menuItems.Count > 0) x.enabled = false;
                             });
 
                             menu.rect = rect;
