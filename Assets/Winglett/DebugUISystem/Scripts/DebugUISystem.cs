@@ -22,12 +22,8 @@ namespace Winglett.DebugSystem
         public GUISkin skin;
 
         private const int MENU_BUTTON_HEIGHT = 20;
-        private const int MENU_BUTTON_CHARACTER_WIDTH = 7;
-        private const int MENU_BUTTON_PADDING = 15;
         private const int MENU_BUTTON_SPACING = 2;
         private const int MENU_SPACING = 2;
-        private const int MENU_PADDING = 5;
-        private const int MENU_RIGHT_PADDING = 40;
         #endregion
 
         #region ----DATA----
@@ -51,7 +47,7 @@ namespace Winglett.DebugSystem
 
         private void Toolbar()
         {
-            GUIExtensions.Toolbar(new Vector2(0f, 0f), menus.Select(x => x.name).ToArray(), (index, rect) =>
+            GUIExtensions.Toolbar(new Vector2(MENU_BUTTON_SPACING, MENU_BUTTON_SPACING), menus.Select(x => x.name).ToArray(), (index, rect) =>
             {
                 int prevActive = activeMenu;
                 if (menus[index].menuType == MenuType.Action)
@@ -101,7 +97,7 @@ namespace Winglett.DebugSystem
                     if (menu.enabled && menu.menuItems.Count > 0)
                     {
                         Rect rect = new Rect();
-                        Vector2 origin = new Vector2(menu.parent == null ? menu.alignment : menu.parent.rect.x + menu.parent.rect.width + MENU_SPACING, menu.parent == null ? (MENU_BUTTON_HEIGHT + MENU_SPACING) : (menu.parent.rect.y + menu.startHeight));
+                        Vector2 origin = new Vector2(menu.parent == null ? menu.alignment : menu.parent.rect.x + menu.parent.rect.width + MENU_SPACING, menu.parent == null ? (MENU_BUTTON_HEIGHT + MENU_SPACING + MENU_BUTTON_SPACING) : (menu.parent.rect.y + menu.startHeight));
                         rect = GUIExtensions.Dropdown(menu.index, origin, menu.menuItems.Select(x => x.name).ToArray(), menu.menuItems.Select(x => x.menuItems.Count > 0).ToArray(), index =>
                         {
                             if (menu.menuItems[index].menuType == MenuType.Action)
