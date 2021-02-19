@@ -42,8 +42,8 @@ namespace Winglett.DebugSystem
             Toolbar();
             SubMenus();
             Windows();
+            CloseMenusOnClickAway();
         }
-
 
         private void Toolbar()
         {
@@ -160,6 +160,32 @@ namespace Winglett.DebugSystem
             {
                 int index = i;
                 if (windows[i].enabled) windows[i].rect = GUIExtensions.Window(windows[i].index, windows[i].name, windows[i].rect, () => windows[index].action?.Invoke(), () => windows[index].enabled = false);
+            }
+        }
+
+        private void CloseMenusOnClickAway()
+        {
+            if (Event.current.isMouse)
+            {
+                bool mouseOverUI = false;
+                ActionOnRecursiveMenuItems(menus, x =>
+                {
+                    // Skip rects of zero size
+                    // Skip closed windows
+                    if (x.menuItems.Count == 0 || !x.enabled || x.rect.width == 0 || x.rect.height == 0) return;
+
+                    if (x.rect.Contains(Event.current.mousePosition)) mouseOverUI = true;
+                });
+
+                if (!mouseOverUI)
+                {
+                    // Disable all menus
+                    ActionOnRecursiveMenuItems(menus, x =>
+                    {
+                        // Don't change the value of windows
+                        if (x.menuItems.Count > 0) x.enabled = false;
+                    });
+                }
             }
         }
 
