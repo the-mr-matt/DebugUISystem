@@ -49,18 +49,29 @@ namespace Winglett.DebugSystem
         {
             GUIExtensions.Toolbar(new Vector2(MENU_BUTTON_SPACING, MENU_BUTTON_SPACING), menus.Select(x => x.name).ToArray(), (index, rect) =>
             {
-                int prevActive = activeMenu;
                 if (menus[index].menuType == MenuType.Action)
                 {
                     menus[index].action?.Invoke();
-
                     activeMenu = -1;
+
+                    // Disable all menus
+                    ActionOnRecursiveMenuItems(menus, x =>
+                    {
+                        // Don't change the value of windows
+                        if (x.menuItems.Count > 0) x.enabled = false;
+                    });
                 }
                 else if (menus[index].menuType == MenuType.Window)
                 {
                     menus[index].enabled = !menus[index].enabled;
-
                     activeMenu = -1;
+
+                    // Disable all menus
+                    ActionOnRecursiveMenuItems(menus, x =>
+                    {
+                        // Don't change the value of windows
+                        if (x.menuItems.Count > 0) x.enabled = false;
+                    });
                 }
                 else
                 {
@@ -73,17 +84,17 @@ namespace Winglett.DebugSystem
 
                     // Set the alignment for top level sub menus
                     menus[index].alignment = rect.x;
-                }
 
-                // Disable any current menus in this menu
-                if (prevActive >= 0)
-                {
-                    ActionOnRecursiveMenuItems(new List<MenuItem>() { menus[prevActive] }, x =>
+                    // Disable any current menus in this menu
+                    if (activeMenu >= 0)
                     {
-                        // Don't disable the current menu - toggle it below
-                        // Don't change the value of windows
-                        if (x != menus[prevActive] && x.menuItems.Count > 0) x.enabled = false;
-                    });
+                        ActionOnRecursiveMenuItems(menus, x =>
+                        {
+                            // Don't disable the current menu - toggle it below
+                            // Don't change the value of windows
+                            if (x != menus[activeMenu] && x.menuItems.Count > 0) x.enabled = false;
+                        });
+                    }
                 }
             });
         }
