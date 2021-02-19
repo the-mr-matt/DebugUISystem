@@ -85,7 +85,7 @@ namespace Winglett
             return GUI.Window(id, rect, windowID =>
             {
                 // Close Button
-                if (GUI.Button(new Rect(4, 4, 11, 11), "x", GUI.skin.GetStyle("Close Button"))) onCloseWindow?.Invoke();
+                if (GUI.Button(new Rect(4, 4, 11, 11), "", GUI.skin.GetStyle("Close Button"))) onCloseWindow?.Invoke();
 
                 onDrawWindowContent?.Invoke();
 
