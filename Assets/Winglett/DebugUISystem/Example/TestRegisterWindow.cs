@@ -11,6 +11,14 @@ namespace Winglett.DebugSystem
         public string[] actions;
         public string[] windows;
 
+        bool demoToggle;
+        string demoField;
+        string demoArea;
+        Vector2 verticalScroll;
+        Vector2 horizontalScroll;
+        float horizontalSlider;
+        float verticalSlider;
+
         private void Start()
         {
             for (int i = 0; i < actions.Length; i++)
@@ -20,10 +28,37 @@ namespace Winglett.DebugSystem
 
             for (int i = 0; i < windows.Length; i++)
             {
-                DebugUISystem.RegisterWindow(windows[i], new Vector2(200, 300), () =>
+                DebugUISystem.RegisterWindow(windows[i], new Vector2(250, 400), () =>
                 {
-                    GUI.Label(new Rect(5, 20, 160, 20), "Hello World");
-                    GUI.Box(new Rect(20, 140, 160, 20), "Some box");
+                    GUILayout.Label("Line");
+                    GUILayout.Label("Line");
+                    GUILayout.Button("Button");
+                    demoToggle = GUILayout.Toggle(demoToggle, "Toggle");
+                    demoField = GUILayout.TextField(demoField);
+                    demoArea = GUILayout.TextArea(demoArea);
+                    GUILayout.Box("Box");
+
+                    horizontalScroll = GUILayout.BeginScrollView(horizontalScroll, true, true, GUILayout.Height(100));
+                    GUILayout.Label("A long string that wraps.");
+                    GUILayout.Label("Line");
+                    GUILayout.Label("Line");
+                    GUILayout.Label("Line");
+                    GUILayout.Label("Line");
+                    GUILayout.Button("Button");
+                    GUILayout.EndScrollView();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Button("Left");
+                    GUILayout.Button("Right");
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginVertical();
+                    GUILayout.Button("Top");
+                    GUILayout.Button("Bottom");
+                    GUILayout.EndVertical();
+
+                    horizontalSlider = GUILayout.HorizontalSlider(horizontalSlider, 0f, 1f);
+                    verticalSlider = GUILayout.VerticalSlider(verticalSlider, 0f, 1f);
                 });
             }
         }
